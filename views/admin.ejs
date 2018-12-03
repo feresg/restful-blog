@@ -1,0 +1,41 @@
+<% include partials/header/header %>
+<% include partials/header/nav_cms %>
+
+
+<div class="container mt-5 pt-5">
+    <% include partials/flash/msg %>
+    <h1 class="text-center my-3 dash-title">Bienvenue, <%= user.username %>!</h1>
+    <div class="card-columns">
+        <div class="card border-primary">
+            <div class="card-body text-primary">
+                <h2 class="card-title"><a class="dash-link" href="/admin/articles"><i class="fas fa-newspaper"></i> <%= articles %> Articles</a></h2>
+                <a href="/admin/articles/new" class="add-btn btn btn-outline-primary"><i class="fas fa-plus"></i></a>
+            </div>
+        </div>
+         <div class="card border-warning">
+            <div class="text-warning card-body">
+            <h2 class="card-title"><i class="fas fa-comments"></i> <%=commentaires %> Commentaires</h2>
+            </div>
+        </div>
+        <div class="card border-danger">
+            <div class="text-danger card-body">
+            <h4 class="card-title"><i class="fas fa-lock"></i> <%=private %> Articles Privés</h4>
+            <hr>
+            <h4 class="card-title"><i class="fas fa-ban"></i> <%=noComment %> Articles avec Commentaires Bloqués</h4>
+            </div>
+        </div>
+        <div class="card border-secondary">
+            <div class="text-secondary card-body">
+            <h2 class="card-title"><i class="fas fa-keyboard"></i> <%=auteurs %> Auteurs</h2>
+            </div>
+        </div>
+        <div class="card border-success">
+        <div class="card-body text-success">
+                <h2 class="card-title"><a class="dash-link" href="/admin/categories"><i class="fas fa-folder-open"></i> <%= categories %> Categories</a></h2>
+            <a href="/admin/categories/new" class="add-btn btn btn-outline-success"><i class="fas fa-plus"></i></a>
+            </div>
+        </div>
+</div>
+</div>
+
+<% include partials/footer/scripts %>

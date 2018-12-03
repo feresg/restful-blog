@@ -1,0 +1,120 @@
+<% include partials/header/header %>
+<% include partials/header/nav %>
+
+<!-- Page Header -->
+<% if(post) { %>
+<header class="masthead post-img" style="background-image: url('/img/uploads/articles/<%=post.image %>')">
+    <div class="container">
+    </div>
+</header>
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+    <% include partials/flash/msg %>
+    <div class="row">
+        <div class="col-lg-8 col-md-9 mx-auto">
+
+        <div class="post-preview">
+                <h2 class="post-title"><%= post.titre%></h2>
+                <h5 class="post-subtitle"><%= post.extrait %></h5>
+            <p class="post-meta">Publié Par
+                <a href="/auteur/<%= post.auteur %>"><%= post.auteur%></a>
+                <span>le <%= moment(post.date_modification).locale('fr').format('lll')%></span><br>
+            </p>
+        </div>
+        <div class="post-body">
+        <%- post.article %>
+        </div>
+        <a href="/categorie/<%= post.categorie %>"><span class="mt-2 category-text badge badge-primary"><%= post.categorie %></span></a>
+        <% if (post.allowComments) { %>
+        <!-- Comments -->
+        <div class="row  mt-5">
+            <div class="col-md-12">
+                <h3 class="comments-title"><span class="fa fa-comments"></span> <%=post.commentaires.length %> Commentaires:</h3>
+                <% post.commentaires.forEach((commentaire) => {%>
+                <div class="comment">
+                    <div class="row">
+                        <div class="col col-lg-9 col-md-9 col-sm-9">
+                            <div class="author-info">
+                                <img src="https://www.gravatar.com/avatar/<%=commentaire.email%>?d=monsterid"  class="author-img"> 
+                                <div class="author-name">
+                                    <h4><%=commentaire.nom%></h4>
+                                    <p class="author-time"><small><%= moment(commentaire.date).locale('fr').format('lll')%></small></p>
+                                </div>
+                            </div>
+                        </div>
+                        <% if(user.username == 'admin' || user.username == post.auteur){ %>
+                        <div class="col-md-3 col-lg-3 col-sm-2 text-center">
+                                <form action="/<%= post.slug%>/commentaires/<%= commentaire._id %>?_method=delete" method="post">
+                                    <button type="submit" class="mt-2 btn btn-outline-danger"><i class="far fa-trash-alt"></i></button>
+                                </form>
+                        </div>
+                        <% } %>
+                    </div>
+
+                    <div class="author-comment"><%=commentaire.commentaire%></div>
+                    <hr>
+                </div>
+                <% }) %>
+            </div>
+	    </div>
+        <form action="/<%=post.slug %>/commentaires" method="post">
+        	<div class="row">
+				<div class="col-md-6 mb-2">
+					<label for="nom">Nom</label>
+					<input type="text" class="form-control" name="nom">
+				</div>
+				<div class="col-md-6 mb-2">
+					<label for="email">Email</label>
+					<input type="email" class="form-control" name="email">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<label for="commentaire">Commentaire</label>
+					<textarea class="form-control" rows="3" name="commentaire"></textarea>
+					<div class="row"><div class="col-md-6 col-md-offset-3">
+						<button type="submit" class="btn btn-outline-success btn- block mt-2"><i class="far fa-comment"></i> Commenter</button>
+					</div></div>
+				</div>
+            </div>
+        </form>
+        <% } %>
+    </div> <!-- col-lg-8 -->
+    <% if(user.username == 'admin' || user.username == post.auteur) { %>
+    <div class="col-md-3">
+        <div class="card bg-light border-dark text-center mb-3" style="max-width: 18rem;">
+            <div class="card-header"><strong>Statut :</strong> <%= (post.isPublished) ? 'Public' : 'Draft/Privé'%></div>
+            <div class="card-body">
+                <form action="/admin/articles/<%= post._id %>/edit/comments?_method=put" method="post">
+                    <button type="submit" class="mb-2 btn btn-block btn-outline-<%= (post.allowComments) ? 'danger':'success'%>"><%= (post.allowComments) ? 'Desa' : 'A' %>ctiver Commentaires</button>
+                </form>
+                <form action="/admin/articles/<%= post._id %>/edit/status?_method=put" method="post">
+                    <button type="submit" class="btn btn-block btn-outline-<%= (post.isPublished) ? 'danger':'success'%>"><%= (post.isPublished) ? 'Rendre Privé' : 'Publier'%></button>
+                </form>
+                <hr>
+                <a href="/admin/articles/<%= post._id %>/edit" class="btn btn-block btn-outline-primary"><i class="far fa-edit"></i> Modifier</a>
+				<button type="button" data-target="#deleteModal" data-toggle="modal" data-id="<%= post._id %>" data-type="article" class="btn btn-block btn-outline-danger"><i class="far fa-trash-alt"></i> Supprimer</button>
+                <hr>
+                <a href="/admin/articles"><i class="fas fa-arrow-left"></i> Articles</a>
+
+            </div>
+            <div class="card-footer">
+                <p class="card-text"><strong>Crée le</strong> <%= moment(post.date_creation).locale('fr').format('lll')%></p>
+                <p class="card-text"><strong>Modifié le</strong> <%= moment(post.date_modification).locale('fr').format('lll')%></p>
+            </div>
+        </div>
+    </div>
+    <% } %>
+    </div><!-- row -->
+    </div> <!-- container -->
+</article>
+<% } %>
+
+<hr>
+<% include partials/modals/delete %>
+
+<% include partials/footer/footer %>
+<% include partials/footer/scripts %>

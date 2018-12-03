@@ -1,0 +1,99 @@
+<% include partials/header/header %>
+<% include partials/header/nav %>
+
+<!-- Page Header -->
+    <header class="masthead" style="background-image: url('/img/background.jpg')">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-md-10 mx-auto">
+            <div class="site-heading">
+              <h2>Mon Blog</h2>
+              <span class="subheading">Bienvenue!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+<div class="container">
+
+<div class="row">
+
+<div class="col-md-9">
+<% if (articles.length > 0) { %>
+<div class="card mb-5">
+    <img class="card-img-top article-img" src="/img/uploads/articles/<%= articles[0].image%>" alt="">
+    <div class="card-body">
+        <div class="post-preview">
+            <a href="/<%=articles[0].slug%>">
+                <h2 class="post-title"><%= articles[0].titre%></h2>
+                <h5 class="post-subtitle"><%= articles[0].extrait%></h5>
+            </a>
+            <p class="post-meta">Publié par 
+                <a href="/auteur/<%= articles[0].auteur%>"><%= articles[0].auteur%></a>
+                <span>le <%= moment(articles[0].date_modification).locale('fr').format('lll')%></span><br>
+            </p>
+            <a href="/categorie/<%= articles[0].categorie%>"><span class="mt-2 category-text badge badge-primary index-cat"><%= articles[0].categorie %></span></a>
+            <% if (articles[0].allowComments) { %><span class="mt-2 category-text badge badge-success index-cat"><%= articles[0].commentaires.length %> <span class="fa fa-comment"></span></span> <% } %>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-2">
+<% for(let i=1; i<articles.length; i++){ %>
+    <div class="col-md-6">
+    <div class="card mb-5">
+        <img class="card-img-top article-img" src="/img/uploads/articles/<%= articles[i].image %>" alt="">
+        <div class="card-body">
+            <div class="post-preview">
+                <a href="/<%=articles[i].slug%>">
+                    <h2 class="post-title"><%= articles[i].titre %></h2>
+                    <h5 class="post-subtitle"><%= articles[i].extrait %></h5>
+                </a>
+                <p class="post-meta">Publié par
+                    <a href="/auteur/<%= articles[i].auteur%>"><%= articles[i].auteur %></a>
+                    <span>le <%= moment(articles[0].date_modification).locale('fr').format('lll')%></span><br>
+                </p>
+                <a href="/categorie/<%= articles[i].categorie%>"><span class="mt-2 category-text badge badge-primary index-cat"><%= articles[i].categorie %></span></a>
+                <% if (articles[i].allowComments) { %><span class="mt-2 category-text badge badge-success index-cat"><%= articles[0].commentaires.length %> <span class="fa fa-comment"></span></span> <% } %>
+            </div>
+        </div>
+    </div>
+    </div>
+<% } %>
+</div>
+
+<% } else { %>
+<h1>Aucun Article</h1>
+<% } %>
+
+
+</div>
+
+<aside class="col-md-3 blog-sidebar">
+  <div class="p-3">
+    <h4>Categories</h4>
+    <ol class="list-unstyled">
+        <% categories.forEach((categorie) => { %>
+            <li><a href="/categorie/<%= categorie%>"><%= categorie %></a></li>
+        <% }) %>
+    </ol>
+  </div>
+  <div class="p-3">
+    <h4>Auteurs</h4>
+    <ol class="list-unstyled">
+        <% auteurs.forEach((auteur) => { %>
+            <li><a href="/auteur/<%= auteur%>"><%= auteur %></a></li>
+        <% }) %>
+    </ol>
+  </div>
+
+</aside><!-- /.blog-sidebar -->
+
+</div>
+</div>
+
+<% include partials/footer/footer %>
+<% include partials/footer/scripts %>

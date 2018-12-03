@@ -1,0 +1,71 @@
+<% include ../partials/header/header %>
+<% include ../partials/header/nav_cms %>
+
+
+<div class="container-fluid mt-5 py-5">
+	<% include ../partials/flash/msg %>
+	<div class="row">
+		<div class="col-md-6">
+			<h1><%=articles.length%> Articles</h1>
+		</div>
+		<div class="col-md-6 text-right">
+			<a href="/admin/articles/new" class="btn btn-lg btn-outline-success"><i class="fas fa-plus"></i> Ajouter Article</a>
+		</div>
+	</div>
+	<div class="card">
+		<div class="card-content">
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col" style="width: 12%">Titre</th>
+						<th scope="col">Auteur</th>
+						<th scope="col" style="width: 10%">Extrait</th>
+						<th scope="col" style="width: 25%">Article</th>
+                        <th scope="col">Categorie</th>
+                        <th scope="col">Statut</th>
+						<th scope="col"><span class="fa fa-comment"></span></th>
+                        <th scope="col" style="width: 8%">Date</th>
+						<th scope="col" style="width: 15%">Image</th>
+						<th scope="col">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<%articles.forEach((article) => { %>
+						<tr>
+							<td><%= article.titre %></td>
+							<td><%= article.auteur %></td>
+							<td>
+								<%= article.extrait.substring(0,100) %>
+								<%=(article.extrait.length > 100) ? '...' : '' %>
+							</td>
+                            <td>
+								<%- article.article.substring(0,200) %>
+								<%=(article.article.length > 250) ? '...' : '' %>
+							</td>
+                            <td><%= article.categorie %></td>
+                            <td><%= (article.isPublished) ? 'Public' : 'Draft' %></td>
+                            <td><%- (article.allowComments) ? article.commentaires.length : '<i class="fas fa-ban"></i>' %></td>
+                            <td>
+								<strong>Creation : </strong><%= moment(article.date_creation).locale('fr').format('lll') %><br>
+								<strong>Modification : </strong><%= moment(article.date_modification).locale('fr').format('lll') %><br>
+							</td>
+							<td><img src="/img/uploads/articles/<%=article.image%>" id="table-img" class="img-thumbnail"></td>
+							<td>
+                                <a href="/<%=article.slug%>"><button class="mb-2 btn btn-outline-success"><i class="fas fa-book-open"></i> Lire</button></a>
+								<a href="/admin/articles/<%=article._id%>/edit"><button class="mb-2 btn btn-outline-primary"><i class="far fa-edit"></i> Modifier</button></a>
+								<button type="button" data-target="#deleteModal" data-toggle="modal" data-id="<%= article._id %>" data-type="article" class="btn btn-outline-danger"><i class="far fa-trash-alt"></i> Supprimer</button>
+							</td>
+						</tr>
+					<%})%>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+</div>
+
+<% include ../partials/modals/delete %>
+
+
+<% include ../partials/footer/scripts %>

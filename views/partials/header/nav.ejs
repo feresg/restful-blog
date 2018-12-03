@@ -1,0 +1,36 @@
+<nav class="mb-5 navbar fixed-top navbar-expand-lg navbar-light bg-light" id="mainNav" style="background-color: rgba(204, 204, 204, 0.1)">
+  <div class="navbar-header d-flex col">
+    <a class="navbar-brand js-scroll-trigger" href="/">
+      <div class="nav-brand">
+        <img height="50" class="d-inline-block align-top" alt="">
+        <p class="nav-brand-text">Blog</p>
+      </div>
+    </a>
+  </div>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+
+  <div class="collapse navbar-collapse justify-content-start" id="navbarSupportedContent">
+    <ul class="nav navbar-nav ml-auto">
+      <% if(user) { %>
+      <ul class="nav navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/admin"><i class="fa fa-user-edit"></i><%= user.username %></a>
+      </li>
+      <li class="ml-2 nav-item">
+        <a class="btn btn-outline-danger text-center" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </li>
+    </ul>
+
+      <% } else { %>
+      <li class="nav-item btn btn-outine-primary">
+        <a class="btn btn-outline-success" href="/login"><i class="fa fa-sign-in-alt"></i> Login</a>
+        <a class="btn btn-outline-primary" href="/register"><i class="fa fa-user-tie"></i> Register</a>
+      </li>
+    <% } %>
+
+    </ul>
+  </div>
+</nav>

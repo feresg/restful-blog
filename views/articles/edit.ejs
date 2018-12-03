@@ -1,0 +1,93 @@
+<% include ../partials/header/header %>
+<% include ../partials/header/nav_cms %>
+
+
+<div class="container mt-5 py-5">
+	<% include ../partials/flash/msg %>
+	<h1>Modifier Un Article</h1>
+	<form action="/admin/articles/<%= article._id%>/?_method=put" method="POST" class="py-3" enctype="multipart/form-data">
+		<div class="form-group">
+			<label for="article[titre]">Titre</label>
+			<input class ="form-control" type="text" name="article[titre]" value="<%=article.titre%>">
+		</div>
+        <div class="form-group row">
+			<label for="article[categorie]" class="col-sm-2 col-form-label">Categorie</label>
+            <div class="col-sm-10 col-form-label">
+                <select name="article[categorie]" class="form-control">
+                    <option value="" selected disabled hidden>Choisir</option>
+                    <% categories.forEach((categorie) => { %>
+                        <option value="<%= categorie.categorie%>" <%= (categorie.categorie == article.categorie) ? 'selected' : ''%> ><%= categorie.categorie%></option>
+                    <%})%>
+                </select>
+            </div>
+		</div>
+        <fieldset class="form-group">
+            <div class="row">
+                <legend class="col-form-label col-sm-2 pt-0">Statut</legend>
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="statut" id="public" value="public" <%= (article.isPublished) ? 'checked' : '' %> >
+                        <label class="form-check-label" for="public">
+                        Public
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="statut" id="draft" value="draft" <%= (article.isPublished) ? '' : 'checked' %> >
+                        <label class="form-check-label" for="draft">
+                        Draft
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-group row">
+            <div class="col-sm-2">Commentaires</div>
+            <div class="col-sm-10">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="commentaires" id="commentaires" <%= (article.allowComments) ? 'checked' : '' %>>
+                <label class="form-check-label" for="commentaires">
+                    Autoriser Commentaires
+                </label>
+            </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="image" class="col-sm-2">Image</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="file" name="image" onchange="readURL(this);"><br>
+                <img id="upload-img" src="/img/uploads/articles/<%= article.image%>" class="img-fluid">
+            </div>
+        </div>
+        <div class="form-group">
+			<label for="article[extrait]">Extrait</label>
+			<textarea class ="form-control"name="article[extrait]"><%= article.extrait%></textarea>
+		</div>
+		<div class="form-group">
+			<label for="article[article]">Article</label>
+			<textarea id="article-editor" class="form-control" name="article[article]"><%= article.article%></textarea>
+		</div>
+		<div class="form-group">
+			<div class="row">
+				<div class="col-md-6 offset-md-3">
+					<button class="btn btn-block btn-success"><i class="fas fa-edit"></i> Modifier</button>
+					<a href="/admin/articles"><<< Articles</a>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/10.0.1/classic/ckeditor.js"></script>
+
+<script>
+	ClassicEditor
+		.create(document.querySelector('#article-editor'))
+		.then(editor => {
+			console.log( editor );
+		})
+		.catch(error => {
+			console.error( error );
+		});
+</script>
+
+<% include ../partials/footer/scripts %>

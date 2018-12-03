@@ -1,0 +1,46 @@
+<% include ../partials/header/header %>
+<% include ../partials/header/nav_cms %>
+
+
+<div class="container mt-5 py-5">
+	<% include ../partials/flash/msg %>
+	<div class="row">
+		<div class="col-md-8">
+			<h1><%=categories.length%> Categories</h1>
+            <ul class="list-group">
+            <% categories.forEach((categorie) => { %>
+                <li class="list-group-item">
+				<div class="row">
+					<div class="col-md-6">
+                    	<h3><%= categorie.categorie %></h3>
+					</div>
+					<div class="col-md-6 text-right">
+                    	<button type="button" class="btn btn-outline-primary" data-target="#editCategorieModal" data-toggle="modal" data-id="<%= categorie._id %>" data-categorie="<%= categorie.categorie %>"><i class="far fa-edit"></i> Modifier</button>
+						<button type="button" data-target="#deleteModal" data-toggle="modal" data-id="<%= categorie._id %>" data-type="categorie" class="btn btn-outline-danger" id="delete-from-btn"><i class="far fa-trash-alt"></i> Supprimer</button>
+					</div>
+				</div>
+				</li>
+            <% }) %>
+            </ul>
+
+
+        </div>
+		<div class="col-md-4">
+			<div class="card">
+				<div class="card-body">
+					<h3 class="card-title">Ajouter Categorie</h3>
+					<form action="/admin/categories" method="post">
+						<input type="text" name="categorie" class="form-control" placeholder="Categorie"><br>
+						<button type="submit" class="btn btn-outline-success btn-block"><i class="fas fa-plus"></i> Ajouter</button>
+					</form>
+				</div>
+		</div>
+	</div>
+
+	</div>
+</div>
+
+<% include ../partials/modals/delete %>
+<% include ../partials/modals/edit_categorie %>
+
+<% include ../partials/footer/scripts %>
